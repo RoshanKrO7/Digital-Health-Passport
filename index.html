@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Health Passport</title>
+  <link rel="icon" href="./favicon_io/favicon-32x32.png" type="image/x-icon">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-  <h1>Digital Health Passport</h1>
+ <img src="./favicon_io/android-chrome-512x512-Photoroom.png" alt="Logo" class="logo">
+  <h1>
+     Digital Health Passport
+</h1>
   
   <div id="login-signup">
     <div id="login-form">
@@ -127,7 +131,7 @@ window.showLogin = function() {
 }
 
 // Logout function
-function logout() {
+window.logout = async function() {
   signOut(auth).then(() => {
     document.getElementById('login-signup').style.display = 'block';
     document.getElementById('health-records').style.display = 'none';

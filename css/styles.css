@@ -1,6 +1,16 @@
+.logo {
+    height: 175px; /* Adjust height as needed */
+    margin-top: -50px; /* Adjust margin to center logo */
+    margin-right: 10px; /* Space between logo and text */
+    margin-bottom: -50px;
+    vertical-align: middle; /* Aligns the logo with the text */
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
+    background-color: #08AEEA;
+    background-image: linear-gradient(0deg, #08AEEA 0%, #2AF598 100%);
     margin: 0;
     padding: 0;
     display: flex;
@@ -54,9 +64,9 @@ h1 {
     opacity: 0; /* Start hidden */
 }
 
-#login-signup, #health-records {
-    background-color: #fff;
-    padding: 20px;
+#login-signup, #health-records, #login-signup input {
+    background-color: #ffffff38;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
@@ -71,12 +81,13 @@ input[type="email"], input[type="password"], input[type="text"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 0;
     border-radius: 4px;
 }
 
 button {
-    width: 100%;
+    
+    width: 49%;
     padding: 10px;
     margin: 10px 0;
     background-color: #007bff;
@@ -110,7 +121,7 @@ button:hover {
 .flex {
     display: flex;
     flex-wrap: wrap; /* Allow wrapping on small screens */
-    gap: 10px; /* Adjusted gap */
+    gap: 0px; /* Adjusted gap */
 }
 
 .form label {
@@ -133,8 +144,8 @@ button:hover {
 
 .form label .input + span {
     position: absolute;
-    left: 10px; /* Adjusted for better alignment */
-    top: 12px; /* Adjusted for better alignment */
+    left: 20px; /* Adjusted for better alignment */
+    bottom: 12px; /* Adjusted for better alignment */
     color: rgba(0, 0, 0, 0.7);
     font-size: 0.9em;
     cursor: text;
@@ -144,13 +155,15 @@ button:hover {
 /* Adjust the focus and valid state styles */
 .form label .input:focus + span,
 .form label .input:valid + span {
-    top: 10px; /* Move above input when focused */
+    bottom: 10px; /* Move above input when focused */
     font-size: 0.7em; /* Adjusted font size */
-    font-weight: 600;
     color: #2980b9; /* Change color on focus */
 }
 
 .submit {
+    display: block;
+    margin: 0 auto;
+    width: 49%;
     border: none;
     outline: none;
     background-color: #2980b9; /* Blue background */
@@ -165,19 +178,3 @@ button:hover {
     background-color: #3498db; /* Lighter blue on hover */
 }
 
-.message, .signin {
-    color: rgba(0, 0, 0, 0.822);
-    font-size: 14px;
-}
-
-.signin {
-    text-align: center;
-}
-
-.signin a {
-    color: royalblue;
-}
-
-.signin a:hover {
-    text-decoration: underline royalblue;
-}
