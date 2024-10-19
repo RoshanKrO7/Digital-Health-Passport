@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Health Passport</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <h1>Digital Health Passport</h1>
+  
+  <div id="login-signup">
+    <div id="login-form">
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email" required>
+      <input type="password" id="login-password" placeholder="Password" required>
+      <button onclick="login()">Login</button>
+      <button id="show-signup" onclick="showSignup()">Sign Up</button>
+    </div>
+
+    <div id="signup-form" style="display:none;">
+      <form class="form" id="form">
+          <!-- <p class="title">Register</p> -->
+          <p class="message">Signup now</p>
+          <div class="flex">
+              <label>
+                  <input required name="firstname" type="text" class="input" placeholder=" ">
+                  <span>Firstname</span>
+              </label>
+              <label>
+                  <input required name="lastname" type="text" class="input" placeholder=" ">
+                  <span>Lastname</span>
+              </label>
+          </div>
+          <label>
+              <input required name="email" type="email" class="input" id="email" placeholder=" ">
+              <span>Email</span>
+          </label>
+          <label>
+              <input required name="password" type="password" class="input" id="password" placeholder=" ">
+              <span>Password</span>
+          </label>
+          <label>
+              <input required name="confirmPassword" type="password" class="input" placeholder=" ">
+              <span>Confirm password</span>
+          </label>
+          <button type="submit" class="submit" onclick="signup()">Submit</button>
+          <p class="signin">Already have an account? <a href="./index.html">Signin</a></p>
+      </form>
+  </div>
+  
+      <!-- <h2>Signup</h2>
+      <input type="text" id="signup-fname" placeholder="First Name" required>
+      <input type="text" id="signup-Lname" placeholder="Last Name" required>
+      <input type="email" id="signup-email" placeholder="Email" required>
+      <input type="password" id="signup-password" placeholder="Password" required>
+      <button onclick="signup()">Signup</button>
+      <button id="show-login" onclick="showLogin()">Back to Login</button> -->
+    
+    </div>
+  </div>
+
+  <div id="health-records" style="display:none;">
+    <h2>Health Records</h2>
+    <input type="text" id="record" placeholder="Enter health record">
+    <button onclick="saveRecord()">Save Record</button>
+    <button onclick="logout()">Logout</button>
+    <div id="records-list"></div>
+  </div>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB77lnFZqn46ul5U1Q8vTOk44STUhjhcIU",
+  authDomain: "digital-health-passport-16ce0.firebaseapp.com",
+  projectId: "digital-health-passport-16ce0",
+  storageBucket: "digital-health-passport-16ce0.appspot.com",
+  messagingSenderId: "798632054158",
+  appId: "1:798632054158:web:05299092d5281dd45e68df"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Login function
+window.login = async function() {
+  try {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    await signInWithEmailAndPassword(auth, email, password);
+    document.getElementById('login-signup').style.display = 'none';
+    document.getElementById('health-records').style.display = 'block';
+  } catch (error) {
+    console.error("Error logging in: ", error);
+    alert("Login failed: " + error.message);
+  }
+}
+
+// Signup function
+window.signup = async function() {
+  try {
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    await createUserWithEmailAndPassword(auth, email, password);
+    document.getElementById('login-signup').style.display = 'none';
+    document.getElementById('health-records').style.display = 'block';
+  } catch (error) {
+    console.error("Error signing up: ", error);
+    alert("Signup failed: " + error.message);
+  }
+}
+
+// Show Signup form
+window.showSignup = function() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('signup-form').style.display = 'block';
+}
+
+// Show Login form
+window.showLogin = function() {
+  document.getElementById('signup-form').style.display = 'none';
+  document.getElementById('login-form').style.display = 'block';
+}
+
+// Logout function
+function logout() {
+  signOut(auth).then(() => {
+    document.getElementById('login-signup').style.display = 'block';
+    document.getElementById('health-records').style.display = 'none';
+  }).catch(error => {
+    console.error("Error signing out: ", error);
+  });
+}
+
+// Save health record
+window.saveRecord = async function() {
+  const record = document.getElementById('record').value;
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      await addDoc(collection(db, 'healthRecords'), {
+        uid: user.uid,
+        record: record,
+        timestamp: serverTimestamp()
+      });
+      document.getElementById('record').value = '';
+      loadRecords();
+    } catch (error) {
+      console.error("Error saving record: ", error);
+      alert("Error saving record: " + error.message);
+    }
+  }
+}
+
+// Load health records
+async function loadRecords() {
+  const user = auth.currentUser;
+  if (user) {
+    const q = query(collection(db, 'healthRecords'), where('uid', '==', user.uid), orderBy('timestamp', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const recordsList = document.getElementById('records-list');
+    recordsList.innerHTML = '';
+    querySnapshot.forEach(doc => {
+      const record = doc.data().record;
+      const div = document.createElement('div');
+      div.textContent = record;
+      recordsList.appendChild(div);
+    });
+  }
+}
+
+// Auth state change listener
+onAuthStateChanged(auth, user => {
+  if (user) {
+    document.getElementById('login-signup').style.display = 'none';
+    document.getElementById('health-records').style.display = 'block';
+    loadRecords();
+  } else {
+    document.getElementById('login-signup').style.display = 'block';
+    document.getElementById('health-records').style.display = 'none';
+  }
+});
+
+  </script>
+</body>
+</html>

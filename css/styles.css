@@ -1,0 +1,183 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack elements vertically */
+    height: 100vh;
+    text-align: center; /* Center text in the body */
+}
+
+@keyframes titleAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        /* transform: translateX(-50%); */
+    }
+}
+
+@keyframes formAnimation {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    animation: titleAnimation 2s forwards;
+    color: #000000;
+    margin-bottom: 20px;
+    font-size: 2em; /* Adjust size for better visibility */
+    max-width: 90%; /* Ensure it doesn't exceed the viewport */
+    overflow: hidden; /* Hide overflow */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+#login-signup {
+    animation: formAnimation 2s forwards;
+    animation-delay: 1s; /* Start after title animation */
+    opacity: 0; /* Start hidden */
+}
+
+#login-signup, #health-records {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 90%; /* Responsive width */
+}
+
+h2 {
+    color: #555;
+}
+
+input[type="email"], input[type="password"], input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#records-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#records-list div {
+    background-color: #e9ecef;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjusted gap */
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px; /* Adjusted gap */
+}
+
+.form label {
+    position: relative;
+    flex: 1 1 45%; /* Adjust flex basis for responsiveness */
+    box-sizing: border-box; /* Ensure padding and borders are included in the total width */
+}
+
+.form label .input {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.5); /* Softer border */
+    border-radius: 8px;
+    font-size: 1em;
+    color: #34495e; /* Darker text for better contrast */
+    background-color: rgba(255, 255, 255, 0.8); /* Light background for input */
+    box-sizing: border-box; /* Ensure padding and borders are included in the total width */
+}
+
+.form label .input + span {
+    position: absolute;
+    left: 10px; /* Adjusted for better alignment */
+    top: 12px; /* Adjusted for better alignment */
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+}
+
+/* Adjust the focus and valid state styles */
+.form label .input:focus + span,
+.form label .input:valid + span {
+    top: 10px; /* Move above input when focused */
+    font-size: 0.7em; /* Adjusted font size */
+    font-weight: 600;
+    color: #2980b9; /* Change color on focus */
+}
+
+.submit {
+    border: none;
+    outline: none;
+    background-color: #2980b9; /* Blue background */
+    padding: 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+    background-color: #3498db; /* Lighter blue on hover */
+}
+
+.message, .signin {
+    color: rgba(0, 0, 0, 0.822);
+    font-size: 14px;
+}
+
+.signin {
+    text-align: center;
+}
+
+.signin a {
+    color: royalblue;
+}
+
+.signin a:hover {
+    text-decoration: underline royalblue;
+}
