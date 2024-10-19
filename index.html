@@ -28,7 +28,7 @@
           <p class="message">Signup now</p>
           <div class="flex">
               <label>
-                  <input required name="firstname" type="text" class="input" placeholder=" ">
+                  <input required name="firstname" type="text" class="input" placeholder=" " >
                   <span>Firstname</span>
               </label>
               <label>
@@ -52,17 +52,8 @@
           <p class="signin">Already have an account? <a href="./index.html">Signin</a></p>
       </form>
   </div>
-  
-      <!-- <h2>Signup</h2>
-      <input type="text" id="signup-fname" placeholder="First Name" required>
-      <input type="text" id="signup-Lname" placeholder="Last Name" required>
-      <input type="email" id="signup-email" placeholder="Email" required>
-      <input type="password" id="signup-password" placeholder="Password" required>
-      <button onclick="signup()">Signup</button>
-      <button id="show-login" onclick="showLogin()">Back to Login</button> -->
-    
     </div>
-  </div>
+
 
   <div id="health-records" style="display:none;">
     <h2>Health Records</h2>
@@ -105,18 +96,40 @@ window.login = async function() {
 }
 
 // Signup function
-window.signup = async function() {
+// Add an event listener for the form
+document.getElementById('form').addEventListener('submit', async function(event) {
+  event.preventDefault(); // Prevent the default form submission
+
   try {
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    await createUserWithEmailAndPassword(auth, email, password);
-    document.getElementById('login-signup').style.display = 'none';
-    document.getElementById('health-records').style.display = 'block';
+    const firstname = document.querySelector('input[name="firstname"]').value;
+    const lastname = document.querySelector('input[name="lastname"]').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Create user with email and password
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Get user ID
+    const userId = userCredential.user.uid;
+
+    // Add user details to Firestore
+    await addDoc(collection(db, 'users'), {
+      uid: userId,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      createdAt: serverTimestamp()
+    });
+
+    // Show success alert
+    alert("Signup successful! Please login to continue.");
+
   } catch (error) {
     console.error("Error signing up: ", error);
     alert("Signup failed: " + error.message);
   }
-}
+});
+
 
 // Show Signup form
 window.showSignup = function() {
